@@ -65,7 +65,7 @@ char *EZXML_NIL[] = { NULL }; // empty, null terminated array of strings
 
 int __isspace_ascii(int ch)
 {
-	return (unsigned int)(ch - 9) < 5u || ch == ' ';
+    return (unsigned int)(ch - 9) < 5u || ch == ' ';
 }
 
 #define isspace	__isspace_ascii
