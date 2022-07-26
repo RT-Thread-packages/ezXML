@@ -37,6 +37,10 @@
 #include <posix/string.h>
 #else
 #define isspace __isspace_ascii
+int __isspace_ascii(int ch)
+{
+    return (unsigned int)(ch - 9) < 5u || ch == ' ';
+}
 #endif /* RT_VER_NUM >= 0x40101 */
 
 #include <stdlib.h>
@@ -71,11 +75,6 @@ struct ezxml_root {       // additional data for the root tag
 };
 
 char *EZXML_NIL[] = { NULL }; // empty, null terminated array of strings
-
-int __isspace_ascii(int ch)
-{
-    return (unsigned int)(ch - 9) < 5u || ch == ' ';
-}
 
 // returns the first child tag with the given name or NULL if not found
 ezxml_t ezxml_child(ezxml_t xml, const char *name)
