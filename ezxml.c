@@ -24,7 +24,20 @@
 #define EZXML_NOMMAP
 
 #include <rtthread.h>
+#if RT_VER_NUM >= 0x40100
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#else
 #include <dfs_posix.h>
+#endif /*RT_VER_NUM >= 0x40100*/
+
+#if RT_VER_NUM >= 0x40101
+#include <posix/string.h>
+#else
+#define isspace __isspace_ascii
+#endif /* RT_VER_NUM >= 0x40101 */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,14 +45,10 @@
 #include <string.h>
 #include <ctype.h>
 
-//#include <unistd.h>
-//#include <sys/types.h>
-
 #ifndef EZXML_NOMMAP
 #include <sys/mman.h>
 #endif // EZXML_NOMMAP
 
-//#include <sys/stat.h>
 #include "ezxml.h"
 
 #define EZXML_WS   "\t\r\n "  // whitespace
@@ -67,8 +76,6 @@ int __isspace_ascii(int ch)
 {
     return (unsigned int)(ch - 9) < 5u || ch == ' ';
 }
-
-#define isspace __isspace_ascii
 
 // returns the first child tag with the given name or NULL if not found
 ezxml_t ezxml_child(ezxml_t xml, const char *name)
